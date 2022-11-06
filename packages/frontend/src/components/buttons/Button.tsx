@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
       : flat
       ? '#E2E2E5'
       : 'none'),
-    boxShadow: text ? 'none' : (highlighted ? theme.boxShadow.button.highlighted : theme.boxShadow.button.default),
+    // boxShadow: text ? 'none' : (highlighted ? theme.boxShadow.button.highlighted : theme.boxShadow.button.default),
     '&:hover': {
       color: text ? theme.palette.text.primary : (highlighted ? 'white' : theme.palette.text.primary),
       background: text ? 'none' : (highlighted
@@ -77,7 +77,6 @@ const LargeButton: FC<ButtonProps> = props => {
     disabled = false,
     loading = false,
     size = 40,
-    boxShadow,
     minWidth,
     borderRadius,
     fullWidth = false,

@@ -7,7 +7,7 @@ import { useWeb3Context } from 'src/contexts/Web3Context'
 import HeaderRoutes from 'src/components/header/HeaderRoutes'
 import TxPill from 'src/components/header/TxPill'
 import HopLogoBlack from 'src/assets/logos/hop-logo-black.svg'
-import HopLogoWhite from 'src/assets/logos/hop-logo-white.svg'
+import MonetLogo from 'src/assets/logos/monet-logo.jpg'
 import { isMainnet, showBannerMessage } from 'src/config'
 import { l1Network } from 'src/config/networks'
 import Settings from 'src/components/header/Settings'
@@ -29,6 +29,7 @@ import MoonIcon from 'src/assets/moon-icon.svg'
 import { Flex, Icon } from '../ui'
 import { useThemeMode } from 'src/theme/ThemeProvider'
 import Banner from 'src/components/Banner'
+import { width } from 'styled-system'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -50,10 +51,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   hopLogo: {
     display: 'flex',
     alignItems: 'center',
-    width: '8.2rem',
+    width: '16.2rem',
     [theme.breakpoints.down('sm')]: {
-      width: '7rem',
+      width: '15rem',
     },
+    paddingTop: '2rem'
   },
   label: {
     fontSize: '1rem',
@@ -72,10 +74,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '3rem',
     marginLeft: '1rem',
     padding: '1.2rem 2rem',
-    boxShadow: ({ isDarkMode }: any) =>
-      isDarkMode
-        ? theme.boxShadow.inner
-        : `rgba(255, 255, 255, 0.5) -3px -3px 6px inset, rgba(174, 174, 192, 0.16) 3px 3px 6px inset`,
+    // boxShadow: ({ isDarkMode }: any) =>
+    //   isDarkMode
+    //     ? theme.boxShadow.inner
+    //     : `rgba(255, 255, 255, 0.5) -3px -3px 6px inset, rgba(174, 174, 192, 0.16) 3px 3px 6px inset`,
     color: theme.palette.text.secondary,
     [theme.breakpoints.down('sm')]: {
       fontSize: '.8rem',
@@ -145,25 +147,26 @@ const Header: FC = () => {
 
   return (
     <>
-      {showBannerMessage && (
+      {/* {showBannerMessage && (
         <Banner>{showBannerMessage}</Banner>
-      )}
+      )} */}
+
       <Box className={styles.root} display="flex" flexDirection="row" alignItems="center">
-        <Box display="flex" flexDirection="row" justifyContent="flex-start" flex={1}>
-          <div>Brandon Bridge</div>
-          {/* <Link to="/" style={{ position: 'relative' }}>
+        <Box flexDirection="row" justifyContent="flex-start" flex={1} >
+          {/* <div>Brandon Bridge</div> */}
+          <Link to="/" >
             <img
               className={styles.hopLogo}
-              src={isDarkMode ? HopLogoWhite : HopLogoBlack}
+              src={MonetLogo}
               alt="Hop"
             />
-            {!isMainnet && <span className={styles.label}>{l1Network.name}</span>}
-          </Link> */}
+          </Link>
+
         </Box>
 
-        <Box display="flex" flexDirection="row" justifyContent="center" alignSelf="center" flex={1} width="100%" flexWrap="wrap">
-          {/* <HeaderRoutes /> */}
-        </Box>
+        {/* <Box display="flex" flexDirection="row" justifyContent="center" alignSelf="center" flex={1} width="100%" flexWrap="wrap">
+           <HeaderRoutes /> 
+        </Box> */}
 
         <Box
           display="flex"
@@ -172,11 +175,11 @@ const Header: FC = () => {
           justifyContent="flex-end"
           alignItems="center"
         >
-          <Flex alignCenter p={[1, 1]} mx={[2, 0]}>
+          {/* <Flex alignCenter p={[1, 1]} mx={[2, 0]}>
             <IconButton onClick={toggleMode}>
               <Icon src={ThemeModeIcon} width={20} alt="Change theme" />
             </IconButton>
-          </Flex>
+          </Flex> */}
 
           {/* <Settings /> */}
 
@@ -187,11 +190,11 @@ const Header: FC = () => {
               borderRadius={'3rem'}
               mx={1}
               p={'1.2rem 2rem'}
-              boxShadow={
-                isDarkMode && theme
-                  ? theme.boxShadow.inner
-                  : `rgba(255, 255, 255, 0.5) -3px -3px 6px inset, rgba(174, 174, 192, 0.16) 3px 3px 6px inset`
-              }
+              // boxShadow={
+              //   isDarkMode && theme
+              //     ? theme.boxShadow.inner
+              //     : `rgba(255, 255, 255, 0.5) -3px -3px 6px inset, rgba(174, 174, 192, 0.16) 3px 3px 6px inset`
+              // }
               color="text.secondary"
               fontSize={['.8rem', '1rem']}
               display={['none', 'flex']}

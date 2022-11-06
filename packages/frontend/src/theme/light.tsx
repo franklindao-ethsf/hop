@@ -43,39 +43,17 @@ export const palette = {
 
 export const boxShadows = {
   input: {
-    normal: `
-      inset -3px -3px 6px rgba(255, 255, 255, 0.5),
-      inset 3px 3px 6px rgba(174, 174, 192, 0.16)`,
-    bold: `
-      inset -12px -12px 24px rgba(255, 255, 255, 0.5),
-      inset 12px 12px 24px rgba(174, 174, 192, 0.16)`,
+    normal: ` `,
+    bold: ` `,
   },
-  inner: `
-    inset 4px -4px 3px #FFFFFF,
-    inset 8px -8px 60px -5px #F1E9EC,
-    inset -7px 7px 5px -4px rgba(174, 174, 192, 0.4)`,
-  card: `
-    8px 8px 30px rgba(174, 174, 192, 0.35),
-    inset -8px -8px 12px rgba(255, 255, 255, 0.15),
-    inset 8px 8px 8px rgba(174, 174, 192, 0.04)`,
+  inner: ` `,
+  card: ` `,
   button: {
-    default: `
-      10px -10px 30px #FFFFFF,
-      -10px 10px 30px #D8D5DC,
-      inset -8px 4px 10px rgba(102, 96, 119, 0.04)`,
-    disabled: `
-      10px -10px 30px #FFFFFF,
-      -10px 10px 30px #D8D5DC,
-      inset -8px 4px 10px rgba(102, 96, 119, 0.04)`,
-    highlighted: `
-      10px -10px 30px #FFFFFF,
-      -10px 10px 30px rgba(216, 213, 220, 0.8)`,
+    default: ` `,
+    disabled: ` `,
+    highlighted: ` `,
   },
-  select: `
-    -6px 6px 12px #D8D5DC,
-    5px -5px 12px #FFFFFF,
-    inset -6px 6px 12px rgba(233, 229, 232, 0.4),
-    inset -5px -5px 14px rgba(255, 255, 255, 0.15)`,
+  select: ` `,
 }
 
 export const overridesLight = {

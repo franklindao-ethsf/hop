@@ -164,7 +164,7 @@ const Send: FC = () => {
       return
     }
 
-    let amount : any
+    let amount: any
     if (amountOut) {
       amount = toTokenDisplay(amountOut, destToken.decimals)
     }
@@ -417,7 +417,7 @@ const Send: FC = () => {
           return
         }
         if (fromNetwork && toNetwork && sourceToken && fromTokenAmountBN && totalBonderFee && estimatedGasCost && toNetwork?.slug === ChainSlug.Optimism) {
-          const payload :any = {
+          const payload: any = {
             gasCost: estimatedGasCost?.toString(),
             amount: fromTokenAmountBN?.toString(),
             token: sourceToken?.symbol,
@@ -654,7 +654,7 @@ const Send: FC = () => {
         deadline={deadline}
         toNetwork={toNetwork}
         fromNetwork={fromNetwork}
-        // setWarning={setWarning}
+      // setWarning={setWarning}
       />
 
       <Flex justifyCenter alignCenter my={1} pointer hover>
@@ -664,7 +664,7 @@ const Send: FC = () => {
       <SendAmountSelectorCard
         value={fromTokenAmount}
         token={destToken ?? placeholderToken}
-        label={'To (estimated)'}
+        label={'To'}
         selectedNetwork={toNetwork}
         networkOptions={networks}
         onNetworkChange={handleToNetworkChange}
@@ -738,7 +738,9 @@ const Send: FC = () => {
           )}
         </div>
       </div> */}
+      {/* 
 {/* 
+      {/* 
       <Alert severity="error" onClose={() => setError(null)} text={error} />
       {!error && <Alert severity="warning">{warning}</Alert>}
       <Alert severity="warning">{manualWarning}</Alert>
@@ -750,10 +752,14 @@ const Send: FC = () => {
             <Button
               className={styles.button}
               large
-              highlighted={!!needsApproval}
+              highlighted
               // disabled={!approveButtonActive}
-              onClick={() => alert(`hi approve! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
-              `${sourceToken?.name} ${sourceToken?.address}`)}
+              onClick={() => {
+                alert(`hi approve! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
+                  `${sourceToken?.name} ${sourceToken?.address}`);
+                if (!sourceToken) return;
+                approve(BigNumber.from(1), sourceToken, "0x86283791B4e9BF64AA71b921A302559b48911c61");
+              }}
               loading={approving}
               fullWidth
             >
@@ -766,8 +772,8 @@ const Send: FC = () => {
             className={styles.button}
             startIcon={sendButtonActive && <SendIcon />}
             onClick={() => alert(`hi send! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
-            `${sourceToken?.name} ${sourceToken?.address}`)}
-                        // disabled={!sendButtonActive}
+              `${sourceToken?.name} ${sourceToken?.address}`)}
+            // disabled={!sendButtonActive}
             loading={sending}
             large
             fullWidth
