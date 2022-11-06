@@ -1,49 +1,29 @@
-import React, { FC, useState, useMemo, useEffect, ChangeEvent } from 'react'
-import Button from 'src/components/buttons/Button'
-import SendIcon from '@material-ui/icons/Send'
+import { ChainSlug } from '@hop-protocol/sdk'
 import ArrowDownIcon from '@material-ui/icons/ArrowDownwardRounded'
-import SendAmountSelectorCard from 'src/pages/Send/SendAmountSelectorCard'
-import Alert from 'src/components/alert/Alert'
-import TxStatusModal from 'src/components/modal/TxStatusModal'
-import DetailRow from 'src/components/InfoTooltip/DetailRow'
-import { BigNumber, constants, providers, ethers } from 'ethers'
+import SendIcon from '@material-ui/icons/Send'
+import { BigNumber, ethers, providers } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
-import Network from 'src/models/Network'
-import { useWeb3Context } from 'src/contexts/Web3Context'
-import { useApp } from 'src/contexts/AppContext'
-import logger from 'src/logger'
-import { commafy, findMatchingBridge, sanitizeNumericalString, toTokenDisplay } from 'src/utils'
-import useSendData from 'src/pages/Send/useSendData'
-import AmmDetails from 'src/components/AmmDetails'
-import FeeDetails from 'src/components/InfoTooltip/FeeDetails'
-import { hopAppNetwork, reactAppNetwork, showRewards } from 'src/config'
-import InfoTooltip from 'src/components/InfoTooltip'
-import { ChainSlug, Token } from '@hop-protocol/sdk'
-import { amountToBN, formatError } from 'src/utils/format'
-import { useSendStyles } from './useSendStyles'
-import SendHeader from './SendHeader'
-import CustomRecipientDropdown from './CustomRecipientDropdown'
-import { Div, Flex } from 'src/components/ui'
-import { useSendTransaction } from './useSendTransaction'
-import {
-  useAssets,
-  useAsyncMemo,
-  useFeeConversions,
-  useApprove,
-  useQueryParams,
-  useNeedsTokenForFee,
-  useBalance,
-  useEstimateTxCost,
-  useTxResult,
-  useSufficientBalance,
-  useDisableTxs,
-  useGnosisSafeTransaction,
-} from 'src/hooks'
+import React, { ChangeEvent, FC, useEffect, useMemo, useState } from 'react'
+import Button from 'src/components/buttons/Button'
 import { ButtonsWrapper } from 'src/components/buttons/ButtonsWrapper'
-import useAvailableLiquidity from './useAvailableLiquidity'
+import { Div, Flex } from 'src/components/ui'
+import { reactAppNetwork, showRewards } from 'src/config'
+import { useApp } from 'src/contexts/AppContext'
+import { useWeb3Context } from 'src/contexts/Web3Context'
+import {
+  useApprove, useAssets,
+  useAsyncMemo, useBalance,
+  useEstimateTxCost, useFeeConversions, useNeedsTokenForFee, useQueryParams, useSufficientBalance, useTxResult
+} from 'src/hooks'
 import useIsSmartContractWallet from 'src/hooks/useIsSmartContractWallet'
-import { ExternalLink } from 'src/components/Link'
-import { FeeRefund } from './FeeRefund'
+import logger from 'src/logger'
+import Network from 'src/models/Network'
+import SendAmountSelectorCard from 'src/pages/Send/SendAmountSelectorCard'
+import useSendData from 'src/pages/Send/useSendData'
+import { commafy, findMatchingBridge, sanitizeNumericalString, toTokenDisplay } from 'src/utils'
+import { amountToBN, formatError } from 'src/utils/format'
+import SendHeader from './SendHeader'
+import { useSendStyles } from './useSendStyles'
 
 const Send: FC = () => {
   const styles = useSendStyles()
@@ -137,11 +117,6 @@ const Send: FC = () => {
 
   // Get available liquidity
   const availableLiquidity = 999999999;
-  // useAvailableLiquidity(
-  //   selectedBridge,
-  //   fromNetwork?.slug,
-  //   toNetwork?.slug
-  // )
 
   // Use send data for tx
   const {
@@ -222,65 +197,65 @@ const Send: FC = () => {
   }, [sendDataError])
 
   // Set error message if asset is unsupported
-  useEffect(() => {
-    if (unsupportedAsset) {
-      const { chain, tokenSymbol } = unsupportedAsset
-      setError(`${tokenSymbol} is currently not supported on ${chain}`)
-    } else if (error) {
-      setError('')
-    }
-  }, [unsupportedAsset])
+  // useEffect(() => {
+  //   if (unsupportedAsset) {
+  //     const { chain, tokenSymbol } = unsupportedAsset
+  //     setError(`${tokenSymbol} is currently not supported on ${chain}`)
+  //   } else if (error) {
+  //     setError('')
+  //   }
+  // }, [unsupportedAsset])
 
   // Check if there is sufficient available liquidity
-  useEffect(() => {
-    const checkAvailableLiquidity = async () => {
-      if (!toNetwork || !availableLiquidity || !requiredLiquidity || !sourceToken) {
-        setNoLiquidityWarning('')
-        return
-      }
+  // useEffect(() => {
+  //   const checkAvailableLiquidity = async () => {
+  //     if (!toNetwork || !availableLiquidity || !requiredLiquidity || !sourceToken) {
+  //       setNoLiquidityWarning('')
+  //       return
+  //     }
 
-      let isAvailable = BigNumber.from(availableLiquidity).gte(requiredLiquidity)
-      if (fromNetwork?.isL1) {
-        isAvailable = true
-      }
+  //     let isAvailable = BigNumber.from(availableLiquidity).gte(requiredLiquidity)
+  //     if (fromNetwork?.isL1) {
+  //       isAvailable = true
+  //     }
 
-      const formattedAmount = toTokenDisplay(availableLiquidity, sourceToken.decimals)
+  //     const formattedAmount = toTokenDisplay(availableLiquidity, sourceToken.decimals)
 
-      const warningMessage = (
-        <>
-          Insufficient liquidity. There is {formattedAmount} {sourceToken.symbol} bonder liquidity
-          available on {toNetwork.name}. Please try again in a few minutes when liquidity becomes
-          available again.{' '}
-          <InfoTooltip
-            title={
-              <>
-                <div>
-                  The Bonder does not have enough liquidity to bond the transfer at the destination.
-                  Liquidity will become available again after the bonder has settled any bonded
-                  transfers.
-                </div>
-                <div>Available liquidity: {formattedAmount}</div>
-                <div>
-                  Required liquidity: {toTokenDisplay(requiredLiquidity, sourceToken.decimals)}
-                </div>
-              </>
-            }
-          />
-        </>
-      )
-      if (!isAvailable) {
-        if (hopAppNetwork !== 'staging') {
-          setIsLiquidityAvailable(false)
-          return setNoLiquidityWarning(warningMessage)
-        }
-      } else {
-        setIsLiquidityAvailable(true)
-        setNoLiquidityWarning('')
-      }
-    }
+  //     const warningMessage = (
+  //       <>
+  //         Insufficient liquidity. There is {formattedAmount} {sourceToken.symbol} bonder liquidity
+  //         available on {toNetwork.name}. Please try again in a few minutes when liquidity becomes
+  //         available again.{' '}
+  //         <InfoTooltip
+  //           title={
+  //             <>
+  //               <div>
+  //                 The Bonder does not have enough liquidity to bond the transfer at the destination.
+  //                 Liquidity will become available again after the bonder has settled any bonded
+  //                 transfers.
+  //               </div>
+  //               <div>Available liquidity: {formattedAmount}</div>
+  //               <div>
+  //                 Required liquidity: {toTokenDisplay(requiredLiquidity, sourceToken.decimals)}
+  //               </div>
+  //             </>
+  //           }
+  //         />
+  //       </>
+  //     )
+  //     if (!isAvailable) {
+  //       if (hopAppNetwork !== 'staging') {
+  //         setIsLiquidityAvailable(false)
+  //         return setNoLiquidityWarning(warningMessage)
+  //       }
+  //     } else {
+  //       setIsLiquidityAvailable(true)
+  //       setNoLiquidityWarning('')
+  //     }
+  //   }
 
-    checkAvailableLiquidity()
-  }, [fromNetwork, sourceToken, toNetwork, availableLiquidity, requiredLiquidity])
+  //   checkAvailableLiquidity()
+  // }, [fromNetwork, sourceToken, toNetwork, availableLiquidity, requiredLiquidity])
 
   const checkingLiquidity = useMemo(() => {
     return !fromNetwork?.isLayer1 && availableLiquidity === undefined
@@ -366,52 +341,6 @@ const Send: FC = () => {
     }
   }, [sdk, fromNetwork, sourceToken, fromTokenAmount, checkApproval])
 
-  // const approveFromToken = async () => {
-  //   if (!fromNetwork) {
-  //     throw new Error('No fromNetwork selected')
-  //   }
-
-  //   if (!sourceToken) {
-  //     throw new Error('No from token selected')
-  //   }
-
-  //   if (!fromTokenAmount) {
-  //     throw new Error('No amount to approve')
-  //   }
-
-  //   const networkId = Number(fromNetwork.networkId)
-  //   const isNetworkConnected = await checkConnectedNetworkId(networkId)
-  //   if (!isNetworkConnected) {
-  //     throw new Error('wrong network connected')
-  //   }
-
-  //   const parsedAmount = amountToBN(fromTokenAmount, sourceToken.decimals)
-  //   const bridge = sdk.bridge(sourceToken.symbol)
-
-  //   const spender: string = await bridge.getSendApprovalAddress(fromNetwork.slug)
-  //   const tx = await approve(BigNumber.from(1), sourceToken, spender)
-
-  //   await tx?.wait()
-  // }
-
-  // const handleApprove = async () => {
-  //   try {
-  //     setError(null)
-  //     setApproving(true)
-  //     await approveFromToken()
-  //   } catch (err: any) {
-  //     if (!/cancelled/gi.test(err.message)) {
-  //       setError(formatError(err, fromNetwork))
-  //     }
-  //     logger.error(err)
-  //   }
-  //   setApproving(false)
-  // }
-
-  // ==============================================================================================
-  // Fee refund
-  // ==============================================================================================
-
   useEffect(() => {
     async function update() {
       try {
@@ -459,51 +388,6 @@ const Send: FC = () => {
 
     update().catch(console.error)
   }, [feeRefundEnabled, fromNetwork, toNetwork, sourceToken, fromTokenAmountBN, totalBonderFee, estimatedGasCost])
-
-  // ==============================================================================================
-  // Send tokens
-  // ==============================================================================================
-
-  const { tx, setTx, send, sending, setIsGnosisSafeWallet } = useSendTransaction({
-    amountOutMin,
-    customRecipient,
-    deadline,
-    totalFee,
-    fromNetwork,
-    fromTokenAmount,
-    intermediaryAmountOutMin,
-    sdk,
-    setError,
-    sourceToken,
-    toNetwork,
-    txConfirm,
-    txHistory,
-    estimatedReceived: estimatedReceivedDisplay
-  })
-
-  useEffect(() => {
-    if (tx) {
-      // clear from token input field
-      setFromTokenAmount('')
-    }
-  }, [tx])
-
-  const { gnosisEnabled, gnosisSafeWarning, isCorrectSignerNetwork } = useGnosisSafeTransaction(
-    tx,
-    customRecipient,
-    fromNetwork,
-    toNetwork,
-  )
-
-  useEffect(() => {
-    setIsGnosisSafeWallet(gnosisEnabled)
-  }, [gnosisEnabled])
-
-  // ==============================================================================================
-  // User actions
-  // - Bridge / Network selection
-  // - Custom recipient input
-  // ==============================================================================================
 
   // Change the bridge if user selects different token to send
   const handleBridgeChange = (event: ChangeEvent<{ value: unknown }>) => {
@@ -554,76 +438,6 @@ const Send: FC = () => {
       setToNetwork(network)
     }
   }
-
-  // Specify custom recipient
-  const handleCustomRecipientInput = (event: any) => {
-    const value = event.target.value.trim()
-    setCustomRecipient(value)
-  }
-
-  useEffect(() => {
-    if (
-      toNetwork?.slug === ChainSlug.Arbitrum &&
-      customRecipient &&
-      !address?.eq(customRecipient)
-    ) {
-      return setManualWarning(
-        'Warning: transfers to exchanges that do not support internal transactions may result in lost funds.'
-      )
-    }
-    setManualWarning('')
-  }, [fromNetwork?.slug, toNetwork?.slug, customRecipient, address])
-
-  useEffect(() => {
-    // if (fromNetwork?.slug === ChainSlug.Polygon || toNetwork?.slug === ChainSlug.Polygon) {
-    //   return setManualError('Warning: transfers to/from Polygon are temporarily down.')
-    // }
-    // setManualError('')
-  }, [fromNetwork?.slug, toNetwork?.slug])
-
-  // const { disabledTx } = useDisableTxs(fromNetwork, toNetwork, sourceToken?.symbol)
-
-  // const approveButtonActive = !needsTokenForFee && !unsupportedAsset && needsApproval
-
-  // const sendButtonActive = useMemo(() => {
-  //   return !!(
-  //     !needsApproval &&
-  //     !approveButtonActive &&
-  //     !checkingLiquidity &&
-  //     !loadingToBalance &&
-  //     !loadingSendData &&
-  //     fromTokenAmount &&
-  //     toTokenAmount &&
-  //     rate &&
-  //     sufficientBalance &&
-  //     isLiquidityAvailable &&
-  //     estimatedReceived?.gt(0) &&
-  //     !manualError &&
-  //     (!disabledTx || disabledTx?.warningOnly) &&
-  //     (gnosisEnabled ? isCorrectSignerNetwork : !isSmartContractWallet) &&
-  //     !destinationChainPaused
-  //   )
-  // }, [
-  //   needsApproval,
-  //   approveButtonActive,
-  //   checkingLiquidity,
-  //   loadingToBalance,
-  //   loadingSendData,
-  //   fromTokenAmount,
-  //   toTokenAmount,
-  //   rate,
-  //   sufficientBalance,
-  //   isLiquidityAvailable,
-  //   estimatedReceived,
-  //   manualError,
-  //   disabledTx,
-  //   gnosisEnabled,
-  //   isCorrectSignerNetwork,
-  //   isSmartContractWallet,
-  // ])
-
-  // const showFeeRefund = feeRefundEnabled && toNetwork?.slug === ChainSlug.Optimism && !!feeRefund && !!feeRefundUsd && !!feeRefundTokenSymbol
-  // const feeRefundDisplay = feeRefund && feeRefundUsd && feeRefundTokenSymbol ? `${feeRefund} ($${feeRefundUsd})` : ''
 
   return (
     <Flex column alignCenter>
@@ -676,78 +490,6 @@ const Send: FC = () => {
         disableInput
       />
 
-      {/* <CustomRecipientDropdown
-        styles={styles}
-        customRecipient={customRecipient}
-        handleCustomRecipientInput={handleCustomRecipientInput}
-        isOpen={customRecipient || isSmartContractWallet}
-      /> */}
-
-      {/* <div className={styles.smartContractWalletWarning}>
-        <Alert severity={gnosisSafeWarning.severity}>{gnosisSafeWarning.text}</Alert>
-      </div>
-
-      {destinationChainPaused && (
-        <div className={styles.pausedWarning}>
-          <Alert severity="warning">Deposits to destination chain {toNetwork?.name} are currently paused. Please check official announcement channels for status updates.</Alert>
-        </div>
-      )} */}
-
-      {/* {disabledTx && (
-        <Alert severity={disabledTx?.message?.severity ||  'warning'}>
-          <ExternalLink
-            href={disabledTx.message?.href}
-            text={disabledTx.message?.text}
-            linkText={disabledTx.message?.linkText}
-            postText={disabledTx.message?.postText}
-          />
-        </Alert>
-      )} */}
-
-      {/* <div className={styles.details}>
-        <div className={styles.destinationTxFeeAndAmount}>
-          <DetailRow
-            title={'Fees'}
-            tooltip={
-              <FeeDetails bonderFee={bonderFeeDisplay} destinationTxFee={destinationTxFeeDisplay} />
-            }
-            value={totalBonderFeeDisplay}
-            large
-          />
-
-          <DetailRow
-            title="Estimated Received"
-            tooltip={
-              <AmmDetails
-                rate={rate}
-                slippageTolerance={slippageTolerance}
-                priceImpact={priceImpact}
-                amountOutMinDisplay={amountOutMinDisplay}
-              />
-            }
-            value={estimatedReceivedDisplay}
-            xlarge
-            bold
-          />
-
-          {showFeeRefund && (
-            <FeeRefund
-              title={`OP Onboarding Reward`}
-              tokenSymbol={feeRefundTokenSymbol}
-              tooltip={`The estimated amount you'll be able to claim as a refund when bridging into Optimism. This refund includes a percentage of the source transaction cost + bonder fee + AMM LP fee. The refund is capped at 20 OP per transfer.`}
-              value={feeRefundDisplay}
-            />
-          )}
-        </div>
-      </div> */}
-      {/* 
-{/* 
-      {/* 
-      <Alert severity="error" onClose={() => setError(null)} text={error} />
-      {!error && <Alert severity="warning">{warning}</Alert>}
-      <Alert severity="warning">{manualWarning}</Alert>
-      <Alert severity="error">{manualError}</Alert> */}
-
       <ButtonsWrapper>
         {true && (
           <Div mb={[3]} fullWidth={true}>
@@ -769,7 +511,6 @@ const Send: FC = () => {
                 } else {
                   sourceToken.approve("0x86283791B4e9BF64AA71b921A302559b48911c61", BigNumber.from(100000000000));
                 }
-                // approve(BigNumber.from(1), sourceToken, "0x86283791B4e9BF64AA71b921A302559b48911c61");
               }}
               loading={approving}
               fullWidth
@@ -789,12 +530,15 @@ const Send: FC = () => {
               const provider = new providers.Web3Provider(window.ethereum, "any");
               provider.send("eth_requestAccounts", []);
               const signer = provider.getSigner();
-              const tokenContract = new ethers.Contract("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD", 
-              ["deposit(address _depositToken, uint256 _depositAmount, address _addrTo)"], signer);
-              tokenContract.approve("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD", ethers.utils.parseEther(fromTokenAmount ?? "0"), { gasLimit: 100000 })
+              const tokenContract = new ethers.Contract("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD",
+                ["function deposit(address recipient, uint256 amount, address tokenAddress)"], signer);
+              tokenContract.deposit("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD",
+                ethers.utils.parseEther(fromTokenAmount ?? "0"),
+                "0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD",
+                { gasLimit: 100000 })
             }}
             // disabled={!sendButtonActive}
-            loading={sending}
+            loading={false}
             large
             fullWidth
             highlighted
@@ -804,10 +548,6 @@ const Send: FC = () => {
         </Div>
       </ButtonsWrapper>
 
-      {/* <Flex mt={1}>
-        <Alert severity="info" onClose={() => setInfo(null)} text={info} />
-        {tx && <TxStatusModal onClose={() => setTx(undefined)} tx={tx} />}
-      </Flex> */}
     </Flex>
   )
 }
