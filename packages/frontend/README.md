@@ -25,7 +25,7 @@ yarn run dev
 Start app using a different network (e.g. `mainnet`, `goerli`, `kovan`)
 
 ```bash
-REACT_APP_NETWORK=mainnet yarn run dev
+REACT_APP_NETWORK=goerli yarn run dev
 ```
 
 Visit [https://localhost:3000/](https://localhost:3000/)

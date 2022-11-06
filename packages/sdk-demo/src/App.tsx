@@ -347,12 +347,12 @@ main().catch(console.error)
                   <Box mb={1}>
                     {sendSummary}
                   </Box>
-                  <Box mb={1}>
+                  {/* <Box mb={1}>
                     Total Fee: {totalFeeFormatted}
                   </Box>
                   <Box mb={1}>
                     Estimated Received: <strong>{estimatedReceivedFormatted}</strong>
-                  </Box>
+                  </Box> */}
                 </Box>
                 <Box mb={4}>
                   <LoadingButton disabled={!needsApproval} onClick={handleApprove} variant="contained">Approve</LoadingButton>

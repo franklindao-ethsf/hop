@@ -1,12 +1,13 @@
 import { Chains } from './types'
 import { goerli as goerliAddresses } from '@hop-protocol/core/addresses'
 import { goerli as goerliConfig } from '@hop-protocol/core/config'
-import { goerli as networks } from '@hop-protocol/core/networks'
+import { goerli as networks, mainnet as _mainnetNetworks } from '@hop-protocol/core/networks'
 
+let networkList = networks.extend(_mainnetNetworks);
 const chains: Chains = {}
 
-for (const chain in networks) {
-  const network = (networks as any)[chain] as any
+for (const chain in networkList) {
+  const network = (networkList as any)[chain] as any
   if (!chains[chain]) {
     chains[chain] = {}
   }

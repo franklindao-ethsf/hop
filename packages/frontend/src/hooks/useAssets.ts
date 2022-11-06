@@ -23,7 +23,7 @@ export function useAssets(selectedBridge?: HopBridge, network?: Network, toNetwo
     }
 
     if (toNetwork) {
-      if (!selectedBridge?.isSupportedAsset(toNetwork?.slug)) {
+      if (false) {
         return {
           chain: toNetwork?.slug,
           tokenSymbol

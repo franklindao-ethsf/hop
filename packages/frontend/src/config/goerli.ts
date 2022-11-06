@@ -1,5 +1,7 @@
-import { goerli as goerliAddresses } from '@hop-protocol/core/addresses'
-import { goerli as goerliNetworks } from '@hop-protocol/core/networks'
+import {
+  goerli as goerliAddresses
+} from '@hop-protocol/core/addresses'
+import { goerli as goerliNetworks, mainnet as _mainnetNetworks } from '@hop-protocol/core/networks'
 import { HopAddresses, Networks } from './interfaces'
 
 export const addresses: HopAddresses = {
@@ -14,6 +16,7 @@ export const addresses: HopAddresses = {
 }
 
 const _networks = goerliNetworks as any
+const _networksm = _mainnetNetworks as any
 
 export const networks: Networks = {
   ethereum: {
@@ -30,18 +33,25 @@ export const networks: Networks = {
     nativeBridgeUrl: _networks.polygon.nativeBridgeUrl,
     waitConfirmations: _networks.polygon.waitConfirmations
   },
-  optimism: {
-    networkId: _networks.optimism.networkId,
-    rpcUrl: _networks.optimism.publicRpcUrl,
-    explorerUrl: _networks.optimism.explorerUrls[0],
-    nativeBridgeUrl: _networks.optimism.nativeBridgeUrl,
-    waitConfirmations: _networks.optimism.waitConfirmations
+  gnosis: {
+    networkId: _networksm.gnosis.networkId,
+    rpcUrl: _networksm.gnosis.publicRpcUrl,
+    explorerUrl: _networksm.gnosis.explorerUrls[0],
+    nativeBridgeUrl: _networksm.gnosis.nativeBridgeUrl,
+    waitConfirmations: _networksm.gnosis.waitConfirmations,
   },
-  arbitrum: {
-    networkId: _networks.arbitrum.networkId,
-    rpcUrl: _networks.arbitrum.publicRpcUrl,
-    explorerUrl: _networks.arbitrum.explorerUrls[0],
-    nativeBridgeUrl: _networks.arbitrum.nativeBridgeUrl,
-    waitConfirmations: _networks.arbitrum.waitConfirmations
-  },
+  // optimism: {
+  //   networkId: _networks.optimism.networkId,
+  //   rpcUrl: _networks.optimism.publicRpcUrl,
+  //   explorerUrl: _networks.optimism.explorerUrls[0],
+  //   nativeBridgeUrl: _networks.optimism.nativeBridgeUrl,
+  //   waitConfirmations: _networks.optimism.waitConfirmations
+  // },
+  // arbitrum: {
+  //   networkId: _networks.arbitrum.networkId,
+  //   rpcUrl: _networks.arbitrum.publicRpcUrl,
+  //   explorerUrl: _networks.arbitrum.explorerUrls[0],
+  //   nativeBridgeUrl: _networks.arbitrum.nativeBridgeUrl,
+  //   waitConfirmations: _networks.arbitrum.waitConfirmations
+  // },
 }

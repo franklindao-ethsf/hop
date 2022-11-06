@@ -3107,23 +3107,23 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@hop-protocol/core@0.0.1-beta.86":
-  version "0.0.1-beta.86"
-  resolved "https://registry.yarnpkg.com/@hop-protocol/core/-/core-0.0.1-beta.86.tgz#5fe48422e5a3bbf77a168d8053863d4912bb4cf8"
-  integrity sha512-p8ZL5M9QZxavCFd4L6dwKm4484vUGFpJnigJRoRr9cTsjxEsuaYKHSzZOpb9+L1E9vtRvhAPMKqZTDtsSFS9AQ==
+"@hop-protocol/core@0.0.1-beta.103":
+  version "0.0.1-beta.103"
+  resolved "https://registry.yarnpkg.com/@hop-protocol/core/-/core-0.0.1-beta.103.tgz#656c16ab24396b3df9879c7e13a54a23cd819c35"
+  integrity sha512-okbBgsycnYlKSLT0f1JF3a+3Ir2T8wxKiQ8ki4v5KgaR9s1dpexDpHGKaHTSroVkJMICcPCjH5NLomHYlJjGOw==
   dependencies:
     ethers "5.7.1"
 
-"@hop-protocol/sdk@0.0.1-beta.367":
-  version "0.0.1-beta.367"
-  resolved "https://registry.yarnpkg.com/@hop-protocol/sdk/-/sdk-0.0.1-beta.367.tgz#3fab59f87c0c131db98a685e18292073b6100266"
-  integrity sha512-maeVPMniQhMb6PdcIr1JWWvoBW+DT9Z2j4Ya/YnA+GOoeZVpTtThQCKQAzpVBJBcrb5keWNlZzfRnynwKZf4Yg==
+"@hop-protocol/sdk@0.0.1-beta.393":
+  version "0.0.1-beta.393"
+  resolved "https://registry.yarnpkg.com/@hop-protocol/sdk/-/sdk-0.0.1-beta.393.tgz#6b7dc48b9762ff703049c856de5793ec1a254bec"
+  integrity sha512-Jrrn9icGB0zvtCWKk1Sr19jCzsPK0XtBefE/OnH/V49vUg7QLrmUmicARE+MODkReyJWJgnI+Lmv+M2BsINHiw==
   dependencies:
     "@eth-optimism/contracts" "0.5.2"
-    "@hop-protocol/core" "0.0.1-beta.86"
+    "@hop-protocol/core" "0.0.1-beta.103"
     "@maticnetwork/maticjs" "3.4.0-beta.0"
     dotenv "8.6.0"
-    ethereum-block-by-date "1.4.5"
+    ethereum-block-by-date "1.4.6"
     ethers "5.7.1"
     eventemitter3 "4.0.7"
     fast-memoize "2.5.2"
@@ -9221,12 +9221,12 @@ eth-sig-util@^3.0.1:
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.0"
 
-ethereum-block-by-date@1.4.5:
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/ethereum-block-by-date/-/ethereum-block-by-date-1.4.5.tgz#ae954a4499942d03837e702033d75acf6a0f96dd"
-  integrity sha512-mxDUx+yxIGPgKz82HjijFDCoZLT+in+p3tHJ82JDQTLDUl92uNDCNF85PPvchgzrhRlwDM4F0q7/qed5MeJKNw==
+ethereum-block-by-date@1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/ethereum-block-by-date/-/ethereum-block-by-date-1.4.6.tgz#80227834ab8a5ebd3318ba58b985b07d47731ba8"
+  integrity sha512-MV7QAjeTl3zuVSeRfNdXeJQCfiwc4wCIXiLMnWqarmhyXzzUqq36+aDsqBFbV/D07WiW5JiuQ7KVtLLaqt6WQw==
   dependencies:
-    moment "^2.29.2"
+    moment "^2.29.4"
 
 ethereum-bloom-filters@^1.0.6:
   version "1.0.10"
@@ -13959,7 +13959,7 @@ mock-fs@^4.1.0:
   resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-4.14.0.tgz#ce5124d2c601421255985e6e94da80a7357b1b18"
   integrity sha512-qYvlv/exQ4+svI3UOvPUpLDF0OMX5euvUH0Ny4N5QyRyhNdgAgUrVH3iUINSzEPLvx0kbo/Bp28GJKIqvE7URw==
 
-moment@^2.29.2:
+moment@^2.29.4:
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==

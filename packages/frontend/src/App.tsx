@@ -29,7 +29,7 @@ function App() {
       <AccountDetails />
       <AppRoutes />
       <TxConfirm />
-      <Footer />
+      {/* <Footer /> */}
     </AppWrapper>
   )
 }

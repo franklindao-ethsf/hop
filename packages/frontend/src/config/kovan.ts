@@ -25,13 +25,13 @@ export const networks: Networks = {
     nativeBridgeUrl: _networks.ethereum.nativeBridgeUrl,
     waitConfirmations: _networks.ethereum.waitConfirmations,
   },
-  optimism: {
-    networkId: _networks.optimism.networkId,
-    rpcUrl: _networks.optimism.publicRpcUrl,
-    explorerUrl: _networks.optimism.explorerUrls[0],
-    nativeBridgeUrl: _networks.optimism.nativeBridgeUrl,
-    waitConfirmations: _networks.optimism.waitConfirmations,
-  },
+  // optimism: {
+  //   networkId: _networks.optimism.networkId,
+  //   rpcUrl: _networks.optimism.publicRpcUrl,
+  //   explorerUrl: _networks.optimism.explorerUrls[0],
+  //   nativeBridgeUrl: _networks.optimism.nativeBridgeUrl,
+  //   waitConfirmations: _networks.optimism.waitConfirmations,
+  // },
   gnosis: {
     networkId: _networks.gnosis.networkId,
     rpcUrl: _networks.gnosis.publicRpcUrl,

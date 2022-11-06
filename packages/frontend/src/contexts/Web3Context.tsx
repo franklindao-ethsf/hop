@@ -56,9 +56,10 @@ const getRpcUrls = (): Record<string, string> => {
   if (reactAppNetwork === 'goerli') {
     return {
       5: getRpcUrl(ChainSlug.Ethereum),
-      421613: getRpcUrl(ChainSlug.Arbitrum),
-      420: getRpcUrl(ChainSlug.Optimism),
+      // 421613: getRpcUrl(ChainSlug.Arbitrum),
+      // 420: getRpcUrl(ChainSlug.Optimism),
       80001: getRpcUrl(ChainSlug.Polygon),
+      100: getRpcUrl(ChainSlug.Gnosis),
     }
   } else {
     return {
@@ -69,7 +70,6 @@ const getRpcUrls = (): Record<string, string> => {
       200: getRpcUrl(ChainSlug.Arbitrum),
       10: getRpcUrl(ChainSlug.Optimism),
       69: getRpcUrl(ChainSlug.Optimism),
-      100: getRpcUrl(ChainSlug.Gnosis),
       137: getRpcUrl(ChainSlug.Polygon),
     }
   }

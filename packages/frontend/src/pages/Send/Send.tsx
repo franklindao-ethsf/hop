@@ -654,7 +654,7 @@ const Send: FC = () => {
         deadline={deadline}
         toNetwork={toNetwork}
         fromNetwork={fromNetwork}
-        setWarning={setWarning}
+        // setWarning={setWarning}
       />
 
       <Flex justifyCenter alignCenter my={1} onClick={handleSwitchDirection} pointer hover>
@@ -662,7 +662,7 @@ const Send: FC = () => {
       </Flex>
 
       <SendAmountSelectorCard
-        value={toTokenAmount}
+        value={fromTokenAmount}
         token={destToken ?? placeholderToken}
         label={'To (estimated)'}
         selectedNetwork={toNetwork}
@@ -674,12 +674,12 @@ const Send: FC = () => {
         disableInput
       />
 
-      <CustomRecipientDropdown
+      {/* <CustomRecipientDropdown
         styles={styles}
         customRecipient={customRecipient}
         handleCustomRecipientInput={handleCustomRecipientInput}
         isOpen={customRecipient || isSmartContractWallet}
-      />
+      /> */}
 
       <div className={styles.smartContractWalletWarning}>
         <Alert severity={gnosisSafeWarning.severity}>{gnosisSafeWarning.text}</Alert>
@@ -702,7 +702,7 @@ const Send: FC = () => {
         </Alert>
       )}
 
-      <div className={styles.details}>
+      {/* <div className={styles.details}>
         <div className={styles.destinationTxFeeAndAmount}>
           <DetailRow
             title={'Fees'}
@@ -737,7 +737,7 @@ const Send: FC = () => {
             />
           )}
         </div>
-      </div>
+      </div> */}
 
       <Alert severity="error" onClose={() => setError(null)} text={error} />
       {!error && <Alert severity="warning">{warning}</Alert>}

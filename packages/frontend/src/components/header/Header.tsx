@@ -150,18 +150,19 @@ const Header: FC = () => {
       )}
       <Box className={styles.root} display="flex" flexDirection="row" alignItems="center">
         <Box display="flex" flexDirection="row" justifyContent="flex-start" flex={1}>
-          <Link to="/" style={{ position: 'relative' }}>
+          <div>Brandon Bridge</div>
+          {/* <Link to="/" style={{ position: 'relative' }}>
             <img
               className={styles.hopLogo}
               src={isDarkMode ? HopLogoWhite : HopLogoBlack}
               alt="Hop"
             />
             {!isMainnet && <span className={styles.label}>{l1Network.name}</span>}
-          </Link>
+          </Link> */}
         </Box>
 
         <Box display="flex" flexDirection="row" justifyContent="center" alignSelf="center" flex={1} width="100%" flexWrap="wrap">
-          <HeaderRoutes />
+          {/* <HeaderRoutes /> */}
         </Box>
 
         <Box
@@ -177,7 +178,7 @@ const Header: FC = () => {
             </IconButton>
           </Flex>
 
-          <Settings />
+          {/* <Settings /> */}
 
           {showBalance && (
             <Flex
