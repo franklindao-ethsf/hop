@@ -603,7 +603,7 @@ const Send: FC = () => {
               const tx = await deposit_contract.deposit(
                 1,
                 caller_pubkey,
-                1,
+                parseInt(fromTokenAmount ?? "0"),
                 gsb_addr,
                 100,
                 // inputs
