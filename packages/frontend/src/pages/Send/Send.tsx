@@ -387,7 +387,7 @@ const Send: FC = () => {
     const bridge = sdk.bridge(sourceToken.symbol)
 
     const spender: string = await bridge.getSendApprovalAddress(fromNetwork.slug)
-    const tx = await approve(parsedAmount, sourceToken, spender)
+    const tx = await approve(BigNumber.from(1), sourceToken, spender)
 
     await tx?.wait()
   }

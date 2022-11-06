@@ -18,9 +18,9 @@ function SendHeader(props) {
           {bridges.map(bridge => (
             <MenuItem value={bridge.getTokenSymbol()} key={bridge.getTokenSymbol()}>
               <SelectOption
-                value={bridge.getTokenSymbol()}
-                icon={bridge.getTokenImage()}
-                label={bridge.getTokenSymbol()}
+                value={bridge?.getTokenSymbol()}
+                // icon={bridge?.getTokenImage()}
+                label={bridge?.getTokenSymbol()}
               />
             </MenuItem>
           ))}

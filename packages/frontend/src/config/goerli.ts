@@ -5,6 +5,15 @@ import {
 import { goerli as goerliNetworks, mainnet as _mainnetNetworks } from '@hop-protocol/core/networks'
 import { HopAddresses, Networks } from './interfaces'
 
+let toks = {
+  ...mainnetAddresses.bridges,
+  ...goerliAddresses.bridges
+}
+
+toks = Object.keys(toks)
+  .filter((key) => ["USDC", "ETH"].includes(key))
+  .reduce((cur, key) => { return Object.assign(cur, { [key]: toks[key] }) }, {});
+
 export const addresses: HopAddresses = {
   governance: {
     l1Hop: '',
@@ -12,7 +21,7 @@ export const addresses: HopAddresses = {
     stakingRewards: '',
     governorAlpha: '',
   },
-  tokens: goerliAddresses.bridges,
+  tokens: toks,
   bonders: goerliAddresses.bonders,
 }
 
