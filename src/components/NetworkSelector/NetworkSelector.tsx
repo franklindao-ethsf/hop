@@ -6,6 +6,8 @@ import { useNetworkSelectorStyles } from './useNetworkSelectorStyles'
 import { Flex, Text } from '../ui'
 import { findNetworkBySlug } from 'src/utils'
 import Network from 'src/models/Network'
+import SelectOption from '../selects/SelectOption'
+
 
 interface Props {
   network?: Network
@@ -33,8 +35,15 @@ function NetworkSelector({ network, setNetwork, availableNetworks, onChange }: P
     }
   }
 
+  const [selectedChain, setSelectedChain] = useState("default"); 
+  const [chains, setChains] = useState(["Goerli", "Polygon", "Gnosis", "Optimism"])
+  const handleChange = event => {
+    console.log(event?.target.value);
+    setSelectedChain(event?.target.value); 
+  }
+
   return (
-    <FlatSelect value={network?.slug || 'default'} onChange={selectNetwork}>
+    <FlatSelect value={selectedChain} onChange={handleChange}>
       <MenuItem value="default">
         <Flex alignCenter height="3.8rem" pl="1.2rem">
           <Text
@@ -49,7 +58,23 @@ function NetworkSelector({ network, setNetwork, availableNetworks, onChange }: P
         </Flex>
       </MenuItem>
 
-      {networks.map(network => (
+      {chains.map((chain, idx) => 
+      (
+        <MenuItem value={chain} key={idx}>
+          <Box className={styles.networkSelectionBox}>
+            {/* <Box className={styles.networkIconContainer}>
+              <img src={network.imageUrl} className={styles.networkIcon} alt={network.name} />
+            </Box> */}
+            <Typography variant="subtitle2" className={styles.networkLabel}>
+              <SelectOption
+                value={chain}
+                label={chain}
+              ></SelectOption>
+            </Typography>
+          </Box>
+        </MenuItem>
+      ))}
+      {/* {networks.map(network => (
         <MenuItem value={network.slug} key={network.slug}>
           <Box className={styles.networkSelectionBox}>
             <Box className={styles.networkIconContainer}>
@@ -60,7 +85,7 @@ function NetworkSelector({ network, setNetwork, availableNetworks, onChange }: P
             </Typography>
           </Box>
         </MenuItem>
-      ))}
+      ))} */}
     </FlatSelect>
   )
 }

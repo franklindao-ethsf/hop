@@ -1,4 +1,4 @@
-import React, { useMemo, FC, ChangeEvent } from 'react'
+import React, { useState, useMemo, FC, ChangeEvent } from 'react'
 import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import Card from '@material-ui/core/Card'
@@ -52,6 +52,12 @@ const SendAmountSelectorCard: FC<Props> = props => {
     setWarning,
   } = props
   const styles = useAmountSelectorCardStyles()
+
+  const [chains, setChains] = useState(["Goerli", "Polygon", "Gnosis"])
+  const handleChange = event => {
+    console.log(event?.target.value); 
+    setChains(event?.target.value);
+  }
 
   const { estimateSend } = useEstimateTxCost(selectedNetwork)
 

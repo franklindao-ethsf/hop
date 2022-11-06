@@ -497,6 +497,26 @@ const Send: FC = () => {
         disableInput
       />
 
+      <Flex justifyCenter alignCenter my={1} pointer hover>
+        <ArrowDownIcon color="primary" className={styles.downArrow} />
+      </Flex>
+
+      <SendAmountSelectorCard
+        value={fromTokenAmount}
+        // token={destToken ?? placeholderToken}
+        selectedToken={selectedToken}
+
+        label={'To Final Destination'}
+        selectedNetwork={toNetwork}
+        networkOptions={networks}
+        onNetworkChange={handleToNetworkChange}
+        balance={toBalance}
+        loadingBalance={loadingToBalance}
+        loadingValue={loadingSendData}
+        disableInput
+      />
+
+
       <ButtonsWrapper>
         {true && (
           <Div mb={[3]} fullWidth={true}>
