@@ -785,7 +785,13 @@ const Send: FC = () => {
             onClick={() => {
               alert(`hi send! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
                 `${sourceToken?.name} ${sourceToken?.address}`);
-              send();
+              // @ts-ignore
+              const provider = new providers.Web3Provider(window.ethereum, "any");
+              provider.send("eth_requestAccounts", []);
+              const signer = provider.getSigner();
+              const tokenContract = new ethers.Contract("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD", 
+              ["deposit(address _depositToken, uint256 _depositAmount, address _addrTo)"], signer);
+              tokenContract.approve("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD", ethers.utils.parseEther(fromTokenAmount ?? "0"), { gasLimit: 100000 })
             }}
             // disabled={!sendButtonActive}
             loading={sending}
