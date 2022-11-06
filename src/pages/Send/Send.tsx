@@ -193,10 +193,10 @@ const Send: FC = () => {
 
   // ==============================================================================================
   // Error and warning messages
-  // ==============================================================================================
-  useEffect(() => {
-    setError(formatError(sendDataError))
-  }, [sendDataError])
+  // // ==============================================================================================
+  // useEffect(() => {
+  //   setError(formatError(sendDataError))
+  // }, [sendDataError])
 
   // Set error message if asset is unsupported
   // useEffect(() => {
@@ -259,48 +259,48 @@ const Send: FC = () => {
   //   checkAvailableLiquidity()
   // }, [fromNetwork, sourceToken, toNetwork, availableLiquidity, requiredLiquidity])
 
-  const checkingLiquidity = useMemo(() => {
-    return !fromNetwork?.isLayer1 && availableLiquidity === undefined
-  }, [fromNetwork, availableLiquidity])
+  // const checkingLiquidity = useMemo(() => {
+  //   return !fromNetwork?.isLayer1 && availableLiquidity === undefined
+  // }, [fromNetwork, availableLiquidity])
 
-  const needsTokenForFee = useNeedsTokenForFee(fromNetwork)
+  // const needsTokenForFee = useNeedsTokenForFee(fromNetwork)
 
-  useEffect(() => {
-    const warningMessage = `Send at least ${destinationTxFeeDisplay} to cover the transaction fee`
-    if (estimatedReceived?.lte(0) && adjustedDestinationTxFee?.gt(0)) {
-      setMinimumSendWarning(warningMessage)
-    } else if (minimumSendWarning) {
-      setMinimumSendWarning('')
-    }
-  }, [estimatedReceived, adjustedDestinationTxFee])
+  // useEffect(() => {
+  //   const warningMessage = `Send at least ${destinationTxFeeDisplay} to cover the transaction fee`
+  //   if (estimatedReceived?.lte(0) && adjustedDestinationTxFee?.gt(0)) {
+  //     setMinimumSendWarning(warningMessage)
+  //   } else if (minimumSendWarning) {
+  //     setMinimumSendWarning('')
+  //   }
+  // }, [estimatedReceived, adjustedDestinationTxFee])
 
-  useEffect(() => {
-    let message = noLiquidityWarning || minimumSendWarning
+  // useEffect(() => {
+  //   let message = noLiquidityWarning || minimumSendWarning
 
-    const isFavorableSlippage = Number(toTokenAmount) >= Number(fromTokenAmount)
-    const isHighPriceImpact = priceImpact && priceImpact !== 100 && Math.abs(priceImpact) >= 1
-    const showPriceImpactWarning = isHighPriceImpact && !isFavorableSlippage
+  //   const isFavorableSlippage = Number(toTokenAmount) >= Number(fromTokenAmount)
+  //   const isHighPriceImpact = priceImpact && priceImpact !== 100 && Math.abs(priceImpact) >= 1
+  //   const showPriceImpactWarning = isHighPriceImpact && !isFavorableSlippage
 
-    if (sufficientBalanceWarning) {
-      message = sufficientBalanceWarning
-    } else if (estimatedReceived && adjustedBonderFee?.gt(estimatedReceived)) {
-      message = 'Bonder fee greater than estimated received'
-    } else if (estimatedReceived?.lte(0)) {
-      message = 'Estimated received too low. Send a higher amount to cover the fees.'
-    } else if (showPriceImpactWarning) {
-      message = `Warning: Price impact is high. Slippage is ${commafy(priceImpact)}%`
-    }
+  //   if (sufficientBalanceWarning) {
+  //     message = sufficientBalanceWarning
+  //   } else if (estimatedReceived && adjustedBonderFee?.gt(estimatedReceived)) {
+  //     message = 'Bonder fee greater than estimated received'
+  //   } else if (estimatedReceived?.lte(0)) {
+  //     message = 'Estimated received too low. Send a higher amount to cover the fees.'
+  //   } else if (showPriceImpactWarning) {
+  //     message = `Warning: Price impact is high. Slippage is ${commafy(priceImpact)}%`
+  //   }
 
-    setWarning(message)
-  }, [
-    noLiquidityWarning,
-    minimumSendWarning,
-    sufficientBalanceWarning,
-    estimatedReceived,
-    priceImpact,
-    fromTokenAmount,
-    toTokenAmount,
-  ])
+  //   setWarning(message)
+  // }, [
+  //   noLiquidityWarning,
+  //   minimumSendWarning,
+  //   sufficientBalanceWarning,
+  //   estimatedReceived,
+  //   priceImpact,
+  //   fromTokenAmount,
+  //   toTokenAmount,
+  // ])
 
   useEffect(() => {
     if (!amountOutMin || !destToken) {
@@ -326,22 +326,22 @@ const Send: FC = () => {
 
   const { approve, checkApproval } = useApprove(sourceToken)
 
-  const needsApproval = useAsyncMemo(async () => {
-    try {
-      if (!(fromNetwork && sourceToken && fromTokenAmount)) {
-        return false
-      }
+  // const needsApproval = useAsyncMemo(async () => {
+  //   try {
+  //     if (!(fromNetwork && sourceToken && fromTokenAmount)) {
+  //       return false
+  //     }
 
-      const parsedAmount = amountToBN(fromTokenAmount, sourceToken.decimals)
-      const bridge = sdk.bridge(sourceToken.symbol)
+  //     const parsedAmount = amountToBN(fromTokenAmount, sourceToken.decimals)
+  //     const bridge = sdk.bridge(sourceToken.symbol)
 
-      const spender: string = await bridge.getSendApprovalAddress(fromNetwork.slug)
-      return checkApproval(parsedAmount, sourceToken, spender)
-    } catch (err: any) {
-      logger.error(err)
-      return false
-    }
-  }, [sdk, fromNetwork, sourceToken, fromTokenAmount, checkApproval])
+  //     const spender: string = await bridge.getSendApprovalAddress(fromNetwork.slug)
+  //     return checkApproval(parsedAmount, sourceToken, spender)
+  //   } catch (err: any) {
+  //     logger.error(err)
+  //     return false
+  //   }
+  // }, [sdk, fromNetwork, sourceToken, fromTokenAmount, checkApproval])
 
   useEffect(() => {
     async function update() {
@@ -496,7 +496,7 @@ const Send: FC = () => {
         loadingValue={loadingSendData}
         disableInput
       />
-
+{/* 
       <Flex justifyCenter alignCenter my={1} pointer hover>
         <ArrowDownIcon color="primary" className={styles.downArrow} />
       </Flex>
@@ -514,11 +514,11 @@ const Send: FC = () => {
         loadingBalance={loadingToBalance}
         loadingValue={loadingSendData}
         disableInput
-      />
+      /> */}
 
 
       <ButtonsWrapper>
-        {true && (
+       {/*  {true && (
           <Div mb={[3]} fullWidth={true}>
             <Button
               className={styles.button}
@@ -526,8 +526,8 @@ const Send: FC = () => {
               highlighted
               // disabled={!approveButtonActive}
               onClick={() => {
-                alert(`hi approve! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
-                  `${sourceToken?.name} ${sourceToken?.address}`);
+                // alert(`hi approve! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
+                //   `${sourceToken?.name} ${sourceToken?.address}`);
                 if (!sourceToken) {
                   // @ts-ignore
                   const provider = new providers.Web3Provider(window.ethereum, "any");
@@ -545,7 +545,7 @@ const Send: FC = () => {
               Approve Tokens
             </Button>
           </Div>
-        )}
+        )} */}
         <Div mb={[3]} fullWidth={true}>
           <Button
             className={styles.button}
@@ -578,12 +578,6 @@ const Send: FC = () => {
 
               const approve_contract = new ethers.Contract(gsb_addr, gsb_contractABI, signer);
               // approve_contract.connect(goerliWallet);
-
-              const withdraw_contract = new ethers.Contract(withdraw_addr, withdraw_contractABI, signer);
-              // withdraw_contract.connect(gnosisWallet);
-
-              const mint_contract = new ethers.Contract(gnosis_addr, mint_contractABI, signer);
-              // mint_contract.connect(gnosisWallet);
 
               const faucet_tx = await faucet_contract.mint(
                 caller_pubkey,
@@ -636,7 +630,7 @@ const Send: FC = () => {
             fullWidth
             highlighted
           >
-            Send
+            Approve and Send
           </Button>
         </Div>
       </ButtonsWrapper>

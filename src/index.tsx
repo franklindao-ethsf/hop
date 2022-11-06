@@ -37,7 +37,7 @@ ReactDOM.render(
           <Web3Provider>
             <AppProvider>
               <App />
-              <ReactQueryDevtools />
+              {/* <ReactQueryDevtools /> */}
             </AppProvider>
           </Web3Provider>
         </Router>
