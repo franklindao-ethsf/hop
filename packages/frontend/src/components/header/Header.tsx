@@ -55,7 +55,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '15rem',
     },
-    paddingTop: '2rem'
+    paddingTop: '2rem',
+    // borderRadius: '2rem'
   },
   label: {
     fontSize: '1rem',

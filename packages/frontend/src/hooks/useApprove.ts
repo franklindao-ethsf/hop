@@ -44,13 +44,15 @@ const useApprove = (token: any) => {
       return
     }
 
-    const approved = await token.allowance(spender)
-    if (approved.gte(amount)) {
-      return
-    }
+    // const approved = await token.allowance(spender)
+    // if (approved.gte(amount)) {
+    //   return
+    // }
 
     const formattedAmount = toTokenDisplay(amount, token.decimals)
     const chain = Chain.fromSlug(token.chain.slug)
+    console.log("ABC");
+
     const tx = await txConfirm?.show({
       kind: 'approval',
       inputProps: {
@@ -60,14 +62,13 @@ const useApprove = (token: any) => {
         tokenSymbol: token.symbol,
         source: {
           network: {
-            slug: token.chain?.slug,
-            networkId: token.chain?.chainId,
+            slug: token.chain?.slug || "gnosis",
+            networkId: token.chain?.chainId || 100,
           },
         },
       },
       onConfirm: async (approveAll: boolean) => {
-        const approveAmount = approveAll ? constants.MaxUint256 : amount
-        return token.approve(spender, approveAmount)
+        return token.approve(spender, constants.MaxUint256)
       },
     })
 

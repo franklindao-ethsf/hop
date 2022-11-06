@@ -6,7 +6,7 @@ import SendAmountSelectorCard from 'src/pages/Send/SendAmountSelectorCard'
 import Alert from 'src/components/alert/Alert'
 import TxStatusModal from 'src/components/modal/TxStatusModal'
 import DetailRow from 'src/components/InfoTooltip/DetailRow'
-import { BigNumber } from 'ethers'
+import { BigNumber, constants, providers, ethers } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import Network from 'src/models/Network'
 import { useWeb3Context } from 'src/contexts/Web3Context'
@@ -18,7 +18,7 @@ import AmmDetails from 'src/components/AmmDetails'
 import FeeDetails from 'src/components/InfoTooltip/FeeDetails'
 import { hopAppNetwork, reactAppNetwork, showRewards } from 'src/config'
 import InfoTooltip from 'src/components/InfoTooltip'
-import { ChainSlug } from '@hop-protocol/sdk'
+import { ChainSlug, Token } from '@hop-protocol/sdk'
 import { amountToBN, formatError } from 'src/utils/format'
 import { useSendStyles } from './useSendStyles'
 import SendHeader from './SendHeader'
@@ -117,6 +117,7 @@ const Send: FC = () => {
   }, [queryParams])
 
   // Get assets
+  // eslint-disable-next-line no-use-before-define
   const { unsupportedAsset, sourceToken, destToken, placeholderToken } = useAssets(
     selectedBridge,
     fromNetwork,
@@ -135,11 +136,12 @@ const Send: FC = () => {
   }, [sourceToken, fromTokenAmount])
 
   // Get available liquidity
-  const { availableLiquidity } = useAvailableLiquidity(
-    selectedBridge,
-    fromNetwork?.slug,
-    toNetwork?.slug
-  )
+  const availableLiquidity = 999999999;
+  // useAvailableLiquidity(
+  //   selectedBridge,
+  //   fromNetwork?.slug,
+  //   toNetwork?.slug
+  // )
 
   // Use send data for tx
   const {
@@ -364,47 +366,47 @@ const Send: FC = () => {
     }
   }, [sdk, fromNetwork, sourceToken, fromTokenAmount, checkApproval])
 
-  const approveFromToken = async () => {
-    if (!fromNetwork) {
-      throw new Error('No fromNetwork selected')
-    }
+  // const approveFromToken = async () => {
+  //   if (!fromNetwork) {
+  //     throw new Error('No fromNetwork selected')
+  //   }
 
-    if (!sourceToken) {
-      throw new Error('No from token selected')
-    }
+  //   if (!sourceToken) {
+  //     throw new Error('No from token selected')
+  //   }
 
-    if (!fromTokenAmount) {
-      throw new Error('No amount to approve')
-    }
+  //   if (!fromTokenAmount) {
+  //     throw new Error('No amount to approve')
+  //   }
 
-    const networkId = Number(fromNetwork.networkId)
-    const isNetworkConnected = await checkConnectedNetworkId(networkId)
-    if (!isNetworkConnected) {
-      throw new Error('wrong network connected')
-    }
+  //   const networkId = Number(fromNetwork.networkId)
+  //   const isNetworkConnected = await checkConnectedNetworkId(networkId)
+  //   if (!isNetworkConnected) {
+  //     throw new Error('wrong network connected')
+  //   }
 
-    const parsedAmount = amountToBN(fromTokenAmount, sourceToken.decimals)
-    const bridge = sdk.bridge(sourceToken.symbol)
+  //   const parsedAmount = amountToBN(fromTokenAmount, sourceToken.decimals)
+  //   const bridge = sdk.bridge(sourceToken.symbol)
 
-    const spender: string = await bridge.getSendApprovalAddress(fromNetwork.slug)
-    const tx = await approve(BigNumber.from(1), sourceToken, spender)
+  //   const spender: string = await bridge.getSendApprovalAddress(fromNetwork.slug)
+  //   const tx = await approve(BigNumber.from(1), sourceToken, spender)
 
-    await tx?.wait()
-  }
+  //   await tx?.wait()
+  // }
 
-  const handleApprove = async () => {
-    try {
-      setError(null)
-      setApproving(true)
-      await approveFromToken()
-    } catch (err: any) {
-      if (!/cancelled/gi.test(err.message)) {
-        setError(formatError(err, fromNetwork))
-      }
-      logger.error(err)
-    }
-    setApproving(false)
-  }
+  // const handleApprove = async () => {
+  //   try {
+  //     setError(null)
+  //     setApproving(true)
+  //     await approveFromToken()
+  //   } catch (err: any) {
+  //     if (!/cancelled/gi.test(err.message)) {
+  //       setError(formatError(err, fromNetwork))
+  //     }
+  //     logger.error(err)
+  //   }
+  //   setApproving(false)
+  // }
 
   // ==============================================================================================
   // Fee refund
@@ -579,49 +581,49 @@ const Send: FC = () => {
     // setManualError('')
   }, [fromNetwork?.slug, toNetwork?.slug])
 
-  const { disabledTx } = useDisableTxs(fromNetwork, toNetwork, sourceToken?.symbol)
+  // const { disabledTx } = useDisableTxs(fromNetwork, toNetwork, sourceToken?.symbol)
 
-  const approveButtonActive = !needsTokenForFee && !unsupportedAsset && needsApproval
+  // const approveButtonActive = !needsTokenForFee && !unsupportedAsset && needsApproval
 
-  const sendButtonActive = useMemo(() => {
-    return !!(
-      !needsApproval &&
-      !approveButtonActive &&
-      !checkingLiquidity &&
-      !loadingToBalance &&
-      !loadingSendData &&
-      fromTokenAmount &&
-      toTokenAmount &&
-      rate &&
-      sufficientBalance &&
-      isLiquidityAvailable &&
-      estimatedReceived?.gt(0) &&
-      !manualError &&
-      (!disabledTx || disabledTx?.warningOnly) &&
-      (gnosisEnabled ? isCorrectSignerNetwork : !isSmartContractWallet) &&
-      !destinationChainPaused
-    )
-  }, [
-    needsApproval,
-    approveButtonActive,
-    checkingLiquidity,
-    loadingToBalance,
-    loadingSendData,
-    fromTokenAmount,
-    toTokenAmount,
-    rate,
-    sufficientBalance,
-    isLiquidityAvailable,
-    estimatedReceived,
-    manualError,
-    disabledTx,
-    gnosisEnabled,
-    isCorrectSignerNetwork,
-    isSmartContractWallet,
-  ])
+  // const sendButtonActive = useMemo(() => {
+  //   return !!(
+  //     !needsApproval &&
+  //     !approveButtonActive &&
+  //     !checkingLiquidity &&
+  //     !loadingToBalance &&
+  //     !loadingSendData &&
+  //     fromTokenAmount &&
+  //     toTokenAmount &&
+  //     rate &&
+  //     sufficientBalance &&
+  //     isLiquidityAvailable &&
+  //     estimatedReceived?.gt(0) &&
+  //     !manualError &&
+  //     (!disabledTx || disabledTx?.warningOnly) &&
+  //     (gnosisEnabled ? isCorrectSignerNetwork : !isSmartContractWallet) &&
+  //     !destinationChainPaused
+  //   )
+  // }, [
+  //   needsApproval,
+  //   approveButtonActive,
+  //   checkingLiquidity,
+  //   loadingToBalance,
+  //   loadingSendData,
+  //   fromTokenAmount,
+  //   toTokenAmount,
+  //   rate,
+  //   sufficientBalance,
+  //   isLiquidityAvailable,
+  //   estimatedReceived,
+  //   manualError,
+  //   disabledTx,
+  //   gnosisEnabled,
+  //   isCorrectSignerNetwork,
+  //   isSmartContractWallet,
+  // ])
 
-  const showFeeRefund = feeRefundEnabled && toNetwork?.slug === ChainSlug.Optimism && !!feeRefund && !!feeRefundUsd && !!feeRefundTokenSymbol
-  const feeRefundDisplay = feeRefund && feeRefundUsd && feeRefundTokenSymbol ? `${feeRefund} ($${feeRefundUsd})` : ''
+  // const showFeeRefund = feeRefundEnabled && toNetwork?.slug === ChainSlug.Optimism && !!feeRefund && !!feeRefundUsd && !!feeRefundTokenSymbol
+  // const feeRefundDisplay = feeRefund && feeRefundUsd && feeRefundTokenSymbol ? `${feeRefund} ($${feeRefundUsd})` : ''
 
   return (
     <Flex column alignCenter>
@@ -747,8 +749,8 @@ const Send: FC = () => {
       <Alert severity="error">{manualError}</Alert> */}
 
       <ButtonsWrapper>
-        {!sendButtonActive && (
-          <Div mb={[3]} fullWidth={approveButtonActive}>
+        {true && (
+          <Div mb={[3]} fullWidth={true}>
             <Button
               className={styles.button}
               large
@@ -757,8 +759,17 @@ const Send: FC = () => {
               onClick={() => {
                 alert(`hi approve! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
                   `${sourceToken?.name} ${sourceToken?.address}`);
-                if (!sourceToken) return;
-                approve(BigNumber.from(1), sourceToken, "0x86283791B4e9BF64AA71b921A302559b48911c61");
+                if (!sourceToken) {
+                  // @ts-ignore
+                  const provider = new providers.Web3Provider(window.ethereum, "any");
+                  provider.send("eth_requestAccounts", []);
+                  const signer = provider.getSigner();
+                  const tokenContract = new ethers.Contract("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD", ["function approve(address spender, uint256 amount)"], signer);
+                  tokenContract.approve("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD", BigNumber.from(100000000000), { gasLimit: 100000 })
+                } else {
+                  sourceToken.approve("0x86283791B4e9BF64AA71b921A302559b48911c61", BigNumber.from(100000000000));
+                }
+                // approve(BigNumber.from(1), sourceToken, "0x86283791B4e9BF64AA71b921A302559b48911c61");
               }}
               loading={approving}
               fullWidth
@@ -767,12 +778,15 @@ const Send: FC = () => {
             </Button>
           </Div>
         )}
-        <Div mb={[3]} fullWidth={sendButtonActive}>
+        <Div mb={[3]} fullWidth={true}>
           <Button
             className={styles.button}
-            startIcon={sendButtonActive && <SendIcon />}
-            onClick={() => alert(`hi send! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
-              `${sourceToken?.name} ${sourceToken?.address}`)}
+            startIcon={true && <SendIcon />}
+            onClick={() => {
+              alert(`hi send! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
+                `${sourceToken?.name} ${sourceToken?.address}`);
+              send();
+            }}
             // disabled={!sendButtonActive}
             loading={sending}
             large
@@ -784,10 +798,10 @@ const Send: FC = () => {
         </Div>
       </ButtonsWrapper>
 
-      <Flex mt={1}>
+      {/* <Flex mt={1}>
         <Alert severity="info" onClose={() => setInfo(null)} text={info} />
         {tx && <TxStatusModal onClose={() => setTx(undefined)} tx={tx} />}
-      </Flex>
+      </Flex> */}
     </Flex>
   )
 }

@@ -121,7 +121,7 @@ export function useEstimateTxCost(selectedNetwork?: Network) {
             }
           )
         } catch (err) {
-          logger.error('estimateSendGasLimit error:', err)
+          logger.warn('estimateSendGasLimit error:', err)
           const defaultSendGasLimits = {
             ethereum: token.symbol === 'ETH' ? 130000 : 180000,
             arbitrum: token.symbol === 'ETH' ? 500000 : 700000,
