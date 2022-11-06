@@ -14,12 +14,12 @@ export function useAssets(selectedBridge?: HopBridge, network?: Network, toNetwo
     const tokenSymbol = selectedBridge?.getTokenSymbol()
 
     if (network) {
-      if (!selectedBridge?.isSupportedAsset(network?.slug)) {
-        return {
-          chain: network?.slug,
-          tokenSymbol
-        }
-      }
+      // if (!selectedBridge?.isSupportedAsset(network?.slug)) {
+      //   return {
+      //     chain: network?.slug,
+      //     tokenSymbol
+      //   }
+      // }
     }
 
     if (toNetwork) {
@@ -67,7 +67,7 @@ export function useAssets(selectedBridge?: HopBridge, network?: Network, toNetwo
   // Set source token
   const sourceToken = useMemo(() => {
     try {
-      if (!network || !selectedBridge || unsupportedAsset?.chain) return
+      if (!network || !selectedBridge) return
       return selectedBridge.getCanonicalToken(network?.slug)
     } catch (err) {
       logger.error(err)
@@ -77,7 +77,7 @@ export function useAssets(selectedBridge?: HopBridge, network?: Network, toNetwo
   // Set destination token
   const destToken = useMemo(() => {
     try {
-      if (!toNetwork || !selectedBridge || unsupportedAsset?.chain) return
+      if (!toNetwork || !selectedBridge) return
       return selectedBridge.getCanonicalToken(toNetwork?.slug)
     } catch (err) {
       logger.error(err)

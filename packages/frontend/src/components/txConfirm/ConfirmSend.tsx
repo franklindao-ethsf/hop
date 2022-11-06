@@ -72,12 +72,12 @@ const ConfirmSend = (props: Props) => {
           </Typography>
         </div>
         <div>
-          <Typography variant="subtitle2" color="textSecondary">
+          {/* <Typography variant="subtitle2" color="textSecondary">
             Estimated Received:
           </Typography>
           <Typography variant="subtitle2" color="textPrimary">
             {estimatedReceived}
-          </Typography>
+          </Typography> */}
         </div>
         {!!customRecipient && (
           <>
@@ -88,11 +88,11 @@ const ConfirmSend = (props: Props) => {
         )}
         {!!warning && <Alert severity="warning" text={warning} className={styles.warning} />}
       </div>
-      {showDeadlineWarning && (
+      {/* {showDeadlineWarning && (
         <Box mb={2}>
           <Alert severity="warning" text="The swap deadline will expire in 7 days. If this is a Gnosis Safe transaction, make sure to execute it within the deadline." className={styles.warning} />
         </Box>
-      )}
+      )} */}
       <Box mb={2} display="flex" flexDirection="column" alignItems="center" textAlign="center">
         <Box style={{ maxWidth: '200px' }}>
         <Typography variant="body2" color="textSecondary">

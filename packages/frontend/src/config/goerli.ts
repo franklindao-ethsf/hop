@@ -1,5 +1,6 @@
 import {
-  goerli as goerliAddresses
+  goerli as goerliAddresses,
+  mainnet as mainnetAddresses
 } from '@hop-protocol/core/addresses'
 import { goerli as goerliNetworks, mainnet as _mainnetNetworks } from '@hop-protocol/core/networks'
 import { HopAddresses, Networks } from './interfaces'

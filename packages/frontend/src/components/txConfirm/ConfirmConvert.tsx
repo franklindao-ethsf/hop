@@ -62,7 +62,7 @@ const ConfirmConvert = (props: Props) => {
             </Typography>
           </>
         )}
-        {!!warning && <Alert severity="warning" text={warning} className={styles.warning} />}
+        {/* {!!warning && <Alert severity="warning" text={warning} className={styles.warning} />} */}
       </div>
       <div className={styles.action}>
         <Button

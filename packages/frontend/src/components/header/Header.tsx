@@ -208,7 +208,7 @@ const Header: FC = () => {
           </Flex>
         </Box>
       </Box>
-      <WalletWarning />
+      {/* <WalletWarning /> */}
     </>
   )
 }

@@ -54,7 +54,7 @@ const useApprove = (token: any) => {
     const tx = await txConfirm?.show({
       kind: 'approval',
       inputProps: {
-        tagline: `Allow Hop to spend your ${token.symbol} on ${chain.name}`,
+        tagline: `Allow bridge to spend your ${token.symbol} on ${chain.name}`,
         amount: token.symbol === 'USDT' ? undefined : formattedAmount,
         token,
         tokenSymbol: token.symbol,

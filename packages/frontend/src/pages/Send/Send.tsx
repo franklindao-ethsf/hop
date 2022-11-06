@@ -657,7 +657,7 @@ const Send: FC = () => {
         // setWarning={setWarning}
       />
 
-      <Flex justifyCenter alignCenter my={1} onClick={handleSwitchDirection} pointer hover>
+      <Flex justifyCenter alignCenter my={1} pointer hover>
         <ArrowDownIcon color="primary" className={styles.downArrow} />
       </Flex>
 
@@ -681,7 +681,7 @@ const Send: FC = () => {
         isOpen={customRecipient || isSmartContractWallet}
       /> */}
 
-      <div className={styles.smartContractWalletWarning}>
+      {/* <div className={styles.smartContractWalletWarning}>
         <Alert severity={gnosisSafeWarning.severity}>{gnosisSafeWarning.text}</Alert>
       </div>
 
@@ -689,9 +689,9 @@ const Send: FC = () => {
         <div className={styles.pausedWarning}>
           <Alert severity="warning">Deposits to destination chain {toNetwork?.name} are currently paused. Please check official announcement channels for status updates.</Alert>
         </div>
-      )}
+      )} */}
 
-      {disabledTx && (
+      {/* {disabledTx && (
         <Alert severity={disabledTx?.message?.severity ||  'warning'}>
           <ExternalLink
             href={disabledTx.message?.href}
@@ -700,7 +700,7 @@ const Send: FC = () => {
             postText={disabledTx.message?.postText}
           />
         </Alert>
-      )}
+      )} */}
 
       {/* <div className={styles.details}>
         <div className={styles.destinationTxFeeAndAmount}>
@@ -738,11 +738,11 @@ const Send: FC = () => {
           )}
         </div>
       </div> */}
-
+{/* 
       <Alert severity="error" onClose={() => setError(null)} text={error} />
       {!error && <Alert severity="warning">{warning}</Alert>}
       <Alert severity="warning">{manualWarning}</Alert>
-      <Alert severity="error">{manualError}</Alert>
+      <Alert severity="error">{manualError}</Alert> */}
 
       <ButtonsWrapper>
         {!sendButtonActive && (
@@ -751,8 +751,9 @@ const Send: FC = () => {
               className={styles.button}
               large
               highlighted={!!needsApproval}
-              disabled={!approveButtonActive}
-              onClick={handleApprove}
+              // disabled={!approveButtonActive}
+              onClick={() => alert(`hi approve! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
+              `${sourceToken?.name} ${sourceToken?.address}`)}
               loading={approving}
               fullWidth
             >
@@ -764,8 +765,9 @@ const Send: FC = () => {
           <Button
             className={styles.button}
             startIcon={sendButtonActive && <SendIcon />}
-            onClick={send}
-            disabled={!sendButtonActive}
+            onClick={() => alert(`hi send! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
+            `${sourceToken?.name} ${sourceToken?.address}`)}
+                        // disabled={!sendButtonActive}
             loading={sending}
             large
             fullWidth

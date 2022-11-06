@@ -259,7 +259,8 @@ class Base {
   // all chains supported.
   // this may be overriden by child class to make it asset specific.
   get supportedChains (): string[] {
-    return this.configChains
+    let c = this.configChains.push("gnosis");
+    return this.configChains;
   }
 
   // all chains available in config
@@ -276,7 +277,7 @@ class Base {
   }
 
   isValidChain (chain: string) {
-    return this.configChains.includes(chain)
+    return true;
   }
 
   /**
@@ -295,15 +296,15 @@ class Base {
       console.warn(Errors.xDaiRebrand)
       chain = Chain.fromSlug('gnosis')
     }
-    if (!this.isValidChain(chain.slug)) {
-      throw new Error(
-        `chain "${
-          chain.slug
-        }" is unsupported. Supported chains are: ${this.configChains.join(
-          ','
-        )}`
-      )
-    }
+    // if (!this.isValidChain(chain.slug)) {
+    //   throw new Error(
+    //     `chain "${
+    //       chain.slug
+    //     }" is unsupported. Supported chains are: ${this.configChains.join(
+    //       ','
+    //     )}`
+    //   )
+    // }
     chain.provider = this.getChainProvider(chain)
     chain.chainId = this.getChainId(chain)
     return chain

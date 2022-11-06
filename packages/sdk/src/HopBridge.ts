@@ -1212,9 +1212,9 @@ class HopBridge extends Base {
     sourceChain: TChain,
     destinationChain: TChain
   ): Promise<BigNumber> {
-    if (!(this.isSupportedAsset(sourceChain) && this.isSupportedAsset(destinationChain))) {
-      return BigNumber.from(0)
-    }
+    // if (!(this.isSupportedAsset(sourceChain) && this.isSupportedAsset(destinationChain))) {
+    //   return BigNumber.from(0)
+    // }
 
     sourceChain = this.toChainModel(sourceChain)
     destinationChain = this.toChainModel(destinationChain)
@@ -2273,10 +2273,10 @@ class HopBridge extends Base {
   }
 
   isSupportedAsset (chain: TChain) {
-    chain = this.toChainModel(chain)
-    const supported = this.getSupportedAssets()
-    const token = this.toTokenModel(this.tokenSymbol)
-    return !!supported[chain.slug]?.[token.canonicalSymbol] ?? false
+    // chain = this.toChainModel(chain)
+    // const supported = this.getSupportedAssets()
+    // const token = this.toTokenModel(this.tokenSymbol)
+    return true;
   }
 
   async getBonderAddress (sourceChain: TChain, destinationChain: TChain): Promise<string> {
