@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState }  from 'react'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -6,7 +6,14 @@ import RaisedSelect from 'src/components/selects/RaisedSelect'
 import SelectOption from 'src/components/selects/SelectOption'
 
 function SendHeader(props) {
-  const { styles, bridges, selectedBridge, handleBridgeChange } = props
+  const { selectedToken, setSelectedToken, styles, bridges, selectedBridge, handleBridgeChange } = props
+
+  const [tokens, setTokens] = useState(["USDC", "ETH", "GFB"]); 
+
+  const handleChange = event => {
+    console.log(event?.target.value); 
+    setSelectedToken(event?.target.value);
+  }
 
   return (
     <div className={styles.header}>
@@ -14,8 +21,18 @@ function SendHeader(props) {
         <Typography variant="h4" className={styles.sendLabel}>
           Send
         </Typography>
-        <RaisedSelect value={selectedBridge?.getTokenSymbol()} onChange={handleBridgeChange}>
-          {bridges.map(bridge => (
+        <RaisedSelect value={selectedToken} 
+          onChange={handleChange}>
+          {tokens.map((token, idx) => (
+            <MenuItem value={token} key={idx}>
+              <SelectOption
+                value={token}
+                label={token}
+              ></SelectOption>
+            </MenuItem>
+          ))}
+          
+          {/* {bridges.map(bridge => (
             <MenuItem value={bridge.getTokenSymbol()} key={bridge.getTokenSymbol()}>
               <SelectOption
                 value={bridge?.getTokenSymbol()}
@@ -23,7 +40,7 @@ function SendHeader(props) {
                 label={bridge?.getTokenSymbol()}
               />
             </MenuItem>
-          ))}
+          ))} */}
         </RaisedSelect>
       </Box>
     </div>

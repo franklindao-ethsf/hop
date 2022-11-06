@@ -62,6 +62,8 @@ const Send: FC = () => {
   const [destinationChainPaused, setDestinationChainPaused] = useState<boolean>(false)
   const [feeRefundEnabled] = useState<boolean>(showRewards)
 
+  const [selectedToken, setSelectedToken] = useState(""); 
+
   // Reset error message when fromNetwork/toNetwork changes
   useEffect(() => {
     if (warning) {
@@ -392,6 +394,7 @@ const Send: FC = () => {
   // Change the bridge if user selects different token to send
   const handleBridgeChange = (event: ChangeEvent<{ value: unknown }>) => {
     const tokenSymbol = event.target.value as string
+
     const bridge = findMatchingBridge(bridges, tokenSymbol)
     if (bridge) {
       setSelectedBridge(bridge)
@@ -442,6 +445,8 @@ const Send: FC = () => {
   return (
     <Flex column alignCenter>
       <SendHeader
+        selectedToken={selectedToken}
+        setSelectedToken={setSelectedToken}
         styles={styles}
         bridges={bridges}
         selectedBridge={selectedBridge}
@@ -450,7 +455,8 @@ const Send: FC = () => {
 
       <SendAmountSelectorCard
         value={fromTokenAmount}
-        token={sourceToken ?? placeholderToken}
+        // token={sourceToken ?? placeholderToken}
+        selectedToken={selectedToken}
         label={'From'}
         onChange={value => {
           if (!value) {
@@ -479,7 +485,8 @@ const Send: FC = () => {
 
       <SendAmountSelectorCard
         value={fromTokenAmount}
-        token={destToken ?? placeholderToken}
+        // token={destToken ?? placeholderToken}
+        selectedToken={selectedToken}
         label={'To'}
         selectedNetwork={toNetwork}
         networkOptions={networks}
@@ -515,7 +522,7 @@ const Send: FC = () => {
               loading={approving}
               fullWidth
             >
-              Approve
+              Approve Tokens
             </Button>
           </Div>
         )}
@@ -523,19 +530,85 @@ const Send: FC = () => {
           <Button
             className={styles.button}
             startIcon={true && <SendIcon />}
-            onClick={() => {
+            onClick={async () => {
               alert(`hi send! ${fromNetwork} to ${toNetwork} ${fromTokenAmount} ` +
                 `${sourceToken?.name} ${sourceToken?.address}`);
               // @ts-ignore
               const provider = new providers.Web3Provider(window.ethereum, "any");
               provider.send("eth_requestAccounts", []);
               const signer = provider.getSigner();
-              const tokenContract = new ethers.Contract("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD",
-                ["function deposit(address recipient, uint256 amount, address tokenAddress)"], signer);
-              tokenContract.deposit("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD",
-                ethers.utils.parseEther(fromTokenAmount ?? "0"),
-                "0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD",
-                { gasLimit: 100000 })
+              const caller_pubkey = await signer.getAddress(); 
+
+              const deposit_addr = "0xB9B112e2c591DeaDe330f1c2C28eC7EfaC84f1A7";
+              const gsb_addr = "0x80ed42C3601CD1E05c062cF0c6Edc037D1658C92";
+              const gnosis_addr = "0x22932A69b4e078963c44c3B6f31A7677C72ED0dE";
+              const withdraw_addr = "0xA7c4EE85071949A00B4f65FdEDca41f79ba0DDc9";
+
+              const deposit_contractABI = ["function deposit(uint8 tokenId, address recipient,uint256 amount,address tokenAddress,uint16 destinationChainId)", "function addToken(uint8 tokenId, uint16 sourceChain, uint16[] calldata chainIds, address[] calldata addresses)"];
+              const gsb_contractABI = ["function approve(address spender,uint256 amount)"]
+              const faucet_contractABI = ["function mint(address to, uint256 amount)"]
+              const withdraw_contractABI = ["function receiveSuccinct(address srcAddress,bytes calldata callData)", "function addToken(uint8 tokenId, uint16 sourceChain, uint16[] calldata chainIds, address[] calldata addresses)"];
+              const mint_contractABI = ["function mint(address to, uint256 amount)"]
+
+              const faucet_contract = new ethers.Contract(gsb_addr, faucet_contractABI, signer);
+              // faucet_contract.connect(goerliWallet);
+
+              const deposit_contract = new ethers.Contract(deposit_addr, deposit_contractABI, signer);
+              // deposit_contract.connect(goerliWallet);
+
+              const approve_contract = new ethers.Contract(gsb_addr, gsb_contractABI, signer);
+              // approve_contract.connect(goerliWallet);
+
+              const withdraw_contract = new ethers.Contract(withdraw_addr, withdraw_contractABI, signer);
+              // withdraw_contract.connect(gnosisWallet);
+
+              const mint_contract = new ethers.Contract(gnosis_addr, mint_contractABI, signer);
+              // mint_contract.connect(gnosisWallet);
+
+              const faucet_tx = await faucet_contract.mint(
+                caller_pubkey,
+                69420,
+                {
+                  gasLimit: 500000,
+                }
+              )
+              console.log("faucet_tx")
+              console.log(faucet_tx);
+              const faucet_receipt = await faucet_tx.wait();
+              console.log(faucet_receipt);
+
+              const approve_tx = await approve_contract.approve(
+                deposit_addr,
+                69420
+              )
+              console.log("approve_tx")
+              console.log(approve_tx);
+              const approve_receipt = await approve_tx.wait();
+              console.log(approve_receipt);
+
+              const tx = await deposit_contract.deposit(
+                1,
+                caller_pubkey,
+                1,
+                gsb_addr,
+                100,
+                // inputs
+                {
+                  gasLimit: 1000000,
+                }
+              )
+              console.log("deposit_tx")
+              console.log(tx);
+              const receipt = await tx.wait();
+              console.log(receipt);
+
+
+              // const tokenContract = new ethers.Contract("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD",
+              //   ["function deposit(address recipient, uint256 amount, address tokenAddress)"], signer);
+              // tokenContract.deposit("0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD",
+              //   ethers.utils.parseEther(fromTokenAmount ?? "0"),
+              //   "0x45cD94330AC3aeA42cc21Cf9315B745e27e768BD",
+              //   { gasLimit: 100000 })
             }}
             // disabled={!sendButtonActive}
             loading={false}

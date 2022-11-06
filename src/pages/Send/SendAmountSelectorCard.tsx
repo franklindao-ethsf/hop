@@ -17,6 +17,7 @@ type Props = {
   value?: string
   label: string
   token?: Token
+  selectedToken: string
   onChange?: (value: string) => void
   fromNetwork?: Network
   toNetwork?: Network
@@ -36,6 +37,7 @@ const SendAmountSelectorCard: FC<Props> = props => {
     value = '',
     label,
     token,
+    selectedToken,
     onChange,
     fromNetwork,
     selectedNetwork,
@@ -135,7 +137,7 @@ const SendAmountSelectorCard: FC<Props> = props => {
           value={value}
           onChange={handleInputChange}
           placeholder="0.0"
-          units={token?.symbol}
+          units={selectedToken}
           disabled={disableInput}
           loadingValue={loadingValue}
         />
